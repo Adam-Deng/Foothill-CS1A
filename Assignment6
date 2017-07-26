@@ -1,0 +1,414 @@
+/*
+*Source-code of Assignment #6 for CS 1A
+* Written by Lei Deng, 02/15/2016
+*
+* This programme is using to simulate a slot machine, it ask the user to
+* put a bet, then output three strings randomly picked from a four strings
+* pool, then tell the user if he win or lost
+* */
+
+
+import java.util.*;
+
+public class Foothill
+{
+   public static void main(String[] args) throws Exception
+   {
+      //build a loop to get started
+      while (true)
+      {
+         int userBet = getBet();//get the bet from the user input
+         //once the user input is not 0, keep the loop running
+         if (userBet != 0)
+         {
+            TripleString pullString = pull();//invoke pull method to get the
+            // TripleString object
+            int payMultiplier = getPayMultiplier(pullString);//pass the
+            // TripleString object to the getPayMultiplier method
+            int winnings = payMultiplier * userBet;//calculate the user winnings
+            display(pullString, winnings);//display the result
+            continue;
+         }
+         //if user input the 0, then quit the loop
+         if (userBet == 0)
+         {
+            System.out.println("You choose to quit, have a nice day!");
+            break;
+         }
+      }
+   }
+
+   public static int getBet()
+   {
+      Scanner input = new Scanner(System.in);
+      String prompt = "How much would you like to bet (1-100) or enter 0 to " +
+              "quit: ";
+      System.out.print(prompt);
+      int userBet = input.nextInt();//get user input
+      //user input data validation
+      while (userBet < 0 || userBet > 100)
+      {
+         System.out.println("Error! Please only enter the number between 1 " +
+                 "and 100, or enter 0 to quit\n Try again!");
+         System.out.println();
+         System.out.print(prompt);
+         userBet = input.nextInt();
+      }
+      //return the result back to the main method
+      return userBet;
+   }
+
+   public static TripleString pull()
+   {
+      TripleString thePull = new TripleString();//create the instance of the
+      // TripleString object
+      //invoke randString method to get 3 random string
+      String string1 = randString();
+      String string2 = randString();
+      String string3 = randString();
+      thePull.setString(string1, string2, string3);//set the value to the
+      // instance
+      return thePull;
+   }
+
+   private static String randString()
+   {
+      String randomString;
+      double randomNumber = Math.random();
+      //get the randomString based on their probability
+      if (randomNumber <= 0.5)
+      {
+         randomString = "BAR";
+      } else if (randomNumber <= 0.75)
+      {
+         randomString = "cherries";
+      } else if (randomNumber <= 0.875)
+      {
+         randomString = "space";
+      } else
+      {
+         randomString = "7";
+      }
+      return randomString;
+   }
+
+   public static int getPayMultiplier(TripleString thePull)
+   {
+      int payMultiplier;
+      //set the multiplier value based on their value
+      if (thePull.getString1() == "cherries")
+      {
+         if (thePull.getString2() == "cherries")
+         {
+            if (thePull.getString3() == "cherries")
+            {
+               payMultiplier = 30;
+            } else
+            {
+               payMultiplier = 15;
+            }
+         } else
+         {
+            payMultiplier = 5;
+         }
+      } else if (thePull.getString1() == "BAR" && thePull.getString2() ==
+              "BAR" && thePull.getString3() == "BAR")
+      {
+         payMultiplier = 50;
+      } else if (thePull.getString1() == "7" && thePull.getString2() == "7" &&
+              thePull.getString3() == "7")
+      {
+         payMultiplier = 100;
+      } else
+      {
+         payMultiplier = 0;
+      }
+
+      return payMultiplier;
+   }
+
+   public static void display(TripleString thePull, int winnings)
+   {
+      //output the string and winning value
+      if (winnings == 0)
+      {
+         System.out.println("whirrrrrr... and your pull is...");
+         System.out.print(thePull.getString1() + "\t");
+         System.out.print(thePull.getString2() + "\t");
+         System.out.print(thePull.getString3() + "\n");
+         System.out.println("sorry, you lose.");
+         System.out.println();
+      } else
+      {
+         System.out.println("whirrrrrr... and your pull is...");
+         System.out.print(thePull.getString1() + "\t");
+         System.out.print(thePull.getString2() + "\t");
+         System.out.print(thePull.getString3() + "\n");
+         System.out.println("congratulations, you win: " + "$" + winnings);
+         System.out.println();
+      }
+   }
+}
+
+class TripleString
+{
+   public static final int MAX_LEN = 20;
+   private String string1;
+   private String string2;
+   private String string3;
+
+   TripleString()
+   {
+      string1 = "";
+      string2 = "";
+      string3 = "";
+   }
+
+   public boolean setString(String string1, String string2, String string3)
+   {
+      //invoke data validation method validString to make sure the string
+      // has legal value, and then assign the value
+      boolean validationResult1 = validString(string1);
+      boolean validationResult2 = validString(string2);
+      boolean validationResult3 = validString(string3);
+      if (validationResult1 && validationResult2 && validationResult3)
+      {
+         this.string1 = string1;
+         this.string2 = string2;
+         this.string3 = string3;
+         return true;
+      } else
+      {
+         return false;
+      }
+   }
+
+   private boolean validString(String str)
+   {
+      //data validation
+      if (str != "" && str.length() <= MAX_LEN)
+      {
+         return true;
+      } else
+      {
+         return false;
+      }
+   }
+
+   public String getString1()
+   {
+      return string1;
+   }
+
+   public String getString2()
+   {
+      return string2;
+   }
+
+   public String getString3()
+   {
+      return string3;
+   }
+
+}
+
+/*--------------------sample run--------------------
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	space	BAR
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	BAR	cherries
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+cherries	cherries	7
+congratulations, you win: $75
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	7	BAR
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	BAR	7
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	BAR	BAR
+congratulations, you win: $250
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	7	cherries
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: -5
+Error! Please only enter the number between 1 and 100, or enter 0 to quit
+ Try again!
+
+How much would you like to bet (1-100) or enter 0 to quit: 150
+Error! Please only enter the number between 1 and 100, or enter 0 to quit
+ Try again!
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	cherries	BAR
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	cherries	7
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	BAR	BAR
+congratulations, you win: $250
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	7	BAR
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+7	cherries	space
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	BAR	space
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+cherries	BAR	space
+congratulations, you win: $25
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	BAR	BAR
+congratulations, you win: $250
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	BAR	BAR
+congratulations, you win: $250
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	cherries	7
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+cherries	cherries	BAR
+congratulations, you win: $75
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+cherries	BAR	cherries
+congratulations, you win: $25
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	space	cherries
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	BAR	BAR
+congratulations, you win: $250
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+7	space	BAR
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+7	cherries	space
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+cherries	BAR	cherries
+congratulations, you win: $25
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	7	BAR
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+space	BAR	BAR
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+cherries	BAR	BAR
+congratulations, you win: $25
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	cherries	BAR
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	cherries	cherries
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: -105
+Error! Please only enter the number between 1 and 100, or enter 0 to quit
+ Try again!
+
+How much would you like to bet (1-100) or enter 0 to quit: 200
+Error! Please only enter the number between 1 and 100, or enter 0 to quit
+ Try again!
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	cherries	BAR
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	space	cherries
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	BAR	BAR
+congratulations, you win: $250
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	BAR	cherries
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+space	BAR	BAR
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	7	BAR
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 5
+whirrrrrr... and your pull is...
+BAR	7	cherries
+sorry, you lose.
+
+How much would you like to bet (1-100) or enter 0 to quit: 0
+You choose to quit, have a nice day!
+----------------------------------------*/

@@ -1,0 +1,184 @@
+/*
+*Source-code of Assignment #5 for CS 1A
+* Written by Lei Deng, 02/08/2016
+*
+* This program is asking user to input a string with at least 4 letters,and
+* using the input string to play "Pig Latin" and "Turkey Irish" word games, then
+ * outputting the result, and counting the number of vowels in the input string.
+* */
+
+
+import java.util.Scanner;
+
+public class Foothill
+{
+   public static void main(String[] args)
+   {
+      //declare local variable to hold the result
+      String theString, pigLatinResult, turkeyIrishResult;
+      int numberOfVowel;
+      //invoke method to get user input
+      theString = getString();
+      //use the result from the getString method as argument to invoke method
+      // to play Pig Latin game and output the result
+      pigLatinResult = pigLatin(theString);
+      System.out.println("Word made into Pig Latin: \n" + pigLatinResult);
+      System.out.println();
+      //use the result from the getString method as argument to invoke method
+      // to play Turkey Irish game and output the result
+      turkeyIrishResult = turkeyIrish(theString);
+      System.out.println("Word made into Turkey Irish: \n" + turkeyIrishResult);
+      System.out.println();
+      //use the result from the getString method as argument to invoke method
+      // to count the number of vowels and output the result
+      numberOfVowel = countVowel(theString);
+      System.out.print("# of vowels in the word: \n" + numberOfVowel);
+   }
+
+   //define getString method
+   static String getString()
+   {
+      Scanner input = new Scanner(System.in);
+      String prompt = "Please enter one word >= 4 letters: ";
+      System.out.print(prompt);
+      //declare local variable and named as inputString to hold the user input
+      String inputString = input.nextLine();
+      //user input validation
+      while (inputString.length() < 4)
+      {
+         System.out.println("Error! Please only give me one word >= 4 " +
+                 "letters\n Try again!");
+         System.out.print(prompt);
+         inputString = input.nextLine();
+      }
+      //return the result back to the main method
+      return inputString;
+   }
+
+   //define Pig Latin game method, using the result from getString method as
+   // formal parameter
+   static String pigLatin(String theString)
+   {
+      //finish the letter replacement process and return the result to the
+      // main method
+      String result = theString.substring(1, theString.length()) + theString
+              .charAt(0) + "ay";
+      return result;
+   }
+
+   //define Turkey Irish game method, using the result from getString method
+   // as formal parameter
+   static String turkeyIrish(String theString)
+   {
+      //declare the result as empty string first
+      String result = "";
+      for (int i = 0; i <= theString.length() - 1; i++)
+         //check the place of the vowel letter
+         if (theString.charAt(i) == 'a' || theString.charAt(i) == 'A' ||
+                 theString.charAt(i) == 'e' || theString.charAt(i) == 'E' ||
+                 theString.charAt(i) == 'i' || theString.charAt(i) == 'I' ||
+                 theString.charAt(i) == 'o' || theString.charAt(i) ==
+                 'O' || theString.charAt(i) == 'u' || theString.charAt(i) ==
+                 'U')
+         {
+            //add the string "ab" in front of the vowel letter if any and
+            // output the result
+            result = result + "ab" + theString.charAt(i);
+
+         } else
+         {
+            //if there is no vowel letter,take the letter out from the user
+            // input and insert to the result string
+            result = result + theString.charAt(i);
+         }
+      //return the result to the main method
+      return result;
+   }
+
+   //define the method, using the result from getString method as formal
+   // parameter to count the number of vowel letter
+   static int countVowel(String theString)
+   {
+      //transfer the user input to lowercase first
+      theString = theString.toLowerCase();
+      //declare the counter to count the number of vowel letter and
+      // initialize to 0
+      int counter = 0;
+      //check if there any vowel letter in the user input
+      for (int i = 0; i <= theString.length() - 1; i++)
+      {
+         if (theString.charAt(i) == 'a' || theString.charAt(i) == 'e' ||
+                 theString.charAt(i) == 'i' || theString.charAt(i) == 'o' ||
+                 theString.charAt(i) == 'u')
+         {
+            //add 1 to the vowel number counter if any
+            counter++;
+         }
+      }
+      //return the result to the main method
+      return counter;
+   }
+}
+
+
+
+/*--------------------sample run--------------------
+Test run #1:
+
+Please enter one word >= 4 letters: cecil
+Word made into Pig Latin:
+ecilcay
+
+Word made into Turkey Irish:
+cabecabil
+
+# of vowels in the word:
+2
+
+
+Test run #2:
+
+Please enter one word >= 4 letters: abc
+Error! Please only give me one word >= 4 letters
+ Try again!
+Please enter one word >= 4 letters:
+
+
+Test run #3:
+
+Please enter one word >= 4 letters: CEcil
+Word made into Pig Latin:
+EcilCay
+
+Word made into Turkey Irish:
+CabEcabil
+
+# of vowels in the word:
+2
+
+
+Test run #4:
+
+Please enter one word >= 4 letters: aEIoUng
+Word made into Pig Latin:
+EIoUngaay
+
+Word made into Turkey Irish:
+abaabEabIaboabUng
+
+# of vowels in the word:
+5
+
+
+Test run #5:
+Please enter one word >= 4 letters: bcfg
+Word made into Pig Latin: 
+cfgbay
+
+Word made into Turkey Irish: 
+bcfg
+
+# of vowels in the word: 
+0
+
+----------------------------------------*/

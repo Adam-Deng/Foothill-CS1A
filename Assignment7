@@ -1,0 +1,249 @@
+/*
+*Source-code of Assignment #7 for CS 1A
+* Written by Lei Deng, 02/23/2016
+*
+*This programme is to simulate the iTunes entry to get used to the use of
+* mutators and accessors
+
+* */
+package com.company;
+
+import java.util.*;
+
+public class Foothill
+{
+   public static void main(String[] args)
+   {
+      //use default or parameter-taking constructor to instantiate objects
+      // and display them
+      iTunes tune1 = new iTunes();
+      iTunes tune2 = new iTunes("Hotel California", "Eagles", 128, 390000);
+      iTunes tune3 = new iTunes();
+      iTunes tune4 = new iTunes("Don't Cry", "Guns N Roses", 320, 285000);
+      System.out.println("Tune1's information: ");
+      tune1.display();
+      System.out.println("Tune2's information: ");
+      tune2.display();
+      System.out.println("Tune3's information: ");
+      tune3.display();
+      System.out.println("Tune4's information: ");
+      tune4.display();
+      System.out.println();
+      //mutate some fields and then display them after changing
+      System.out.println("Now mutate the fields: " + "\n");
+      System.out.println("Now Tune1 is:");
+      tune1.setName("I Believe I Can Fly");
+      tune1.setArtist("R. Kelly");
+      tune1.display();
+      System.out.println("Now Tune2 is:");
+      tune2.setBitrate(256);
+      tune2.display();
+      System.out.println("Now Tune3 is:");
+      tune3.setName("Heal The World");
+      tune3.setArtist("Michael Jackson");
+      tune3.display();
+      System.out.println("Now Tune4 is:");
+      tune4.setTotalTime(6000);
+      tune4.display();
+      //test mutators to see if they work well
+      System.out.println("Now test mutators: " + "\n");
+      if (!tune1.setBitrate(1))
+      {
+         System.out.println("Error, the minimum bitrate is 64k");
+      } else
+      {
+         System.out.println("the Tune1's bitrate has successfully set to 1k");
+      }
+      System.out.println();
+      if (!tune4.setTotalTime(80000))
+      {
+         System.out.println("Error, the minimum playtime is 1000 milliseconds");
+      } else
+      {
+         System.out.println("The tune4's playtime has successfully set " +
+                 "to " + (80000 / 1000) + "seconds");
+      }
+      System.out.println("-----------------------------");
+      //test accessors to see if they work well
+      System.out.println("Now test accessors: " + "\n");
+      System.out.println("The Tune2's title is: " + tune2.getName() + "\n");
+      System.out.println("The Tune3's artist is: " + tune3.getArtist());
+   }
+}
+
+class iTunes
+{
+   //declare constant
+   public static final int MIN_BITRATE = 64;
+   public static final int MAX_BITRATE = 705;
+   public static final int MIN_STR_LENGTH = 1;
+   public static final int MAX_STR_LENGTH = 80;
+   public static final int MIN_PLAY_TIME = 1000;
+   public static final int MAX_PLAY_TIME = 1000 * 60 * 60;
+   public static final int DEFAULT_BITRATE = 64;
+   public static final int DEFAULT_PLAY_TIME = 1000;
+   public static final String DEFAULT_STRING = "(undefined)";
+   //declare private variable
+   private String name;
+   private String artist;
+   private int bitrate;
+   private int totalTime;
+
+   //default constructor
+   public iTunes()
+   {
+      name = DEFAULT_STRING;
+      artist = DEFAULT_STRING;
+      bitrate = DEFAULT_BITRATE;
+      totalTime = DEFAULT_PLAY_TIME;
+   }
+
+   //four parameters taking constructor
+   public iTunes(String name, String artist, int bitrate, int totalTime)
+   {
+      if (!setName(name))
+      {
+         this.name = DEFAULT_STRING;
+      }
+      if (!setArtist(artist))
+      {
+         this.artist = DEFAULT_STRING;
+      }
+      if (!setBitrate(bitrate))
+      {
+         this.bitrate = DEFAULT_BITRATE;
+      }
+      if (!setTotalTime(totalTime))
+      {
+         this.totalTime = DEFAULT_PLAY_TIME;
+      }
+   }
+
+   //accessors
+   public String getName()
+   {
+      return name;
+   }
+
+   public String getArtist()
+   {
+      return artist;
+   }
+
+   public int getBitrate()
+   {
+      return bitrate;
+   }
+
+   public int getTotalTime()
+   {
+      return totalTime;
+   }
+
+   //mutators
+   public boolean setName(String name)
+   {
+      if (name.length() < MIN_STR_LENGTH || name.length() > MAX_STR_LENGTH)
+      {
+         return false;
+      }
+      this.name = name;
+      return true;
+   }
+
+   public boolean setArtist(String artist)
+   {
+      if (artist.length() < MIN_STR_LENGTH || artist.length() > MAX_STR_LENGTH)
+      {
+         return false;
+      }
+      this.artist = artist;
+      return true;
+   }
+
+   public boolean setBitrate(int bitrate)
+   {
+      if (bitrate < MIN_BITRATE || bitrate > MAX_BITRATE)
+      {
+         return false;
+      }
+      this.bitrate = bitrate;
+      return true;
+   }
+
+   public boolean setTotalTime(int totalTime)
+   {
+      if (totalTime < MIN_PLAY_TIME || totalTime > MAX_PLAY_TIME)
+      {
+         return false;
+      }
+      this.totalTime = totalTime;
+      return true;
+   }
+
+   //convert object information to string
+   public String toString()
+   {
+      String tuneInformation = "Title: " + this.name + "\t" + "/" + "Artist: " +
+              this.artist + "\t" + "/" + "Playing Time: " + ((this.totalTime)
+              / 1000) + "seconds" + "\t" + "/" + "Bit Rate: " + this.bitrate
+              + "k";
+      return tuneInformation;
+   }
+
+   //display result
+   public void display()
+   {
+      System.out.println(toString());
+      System.out.println("------------------------------");
+   }
+}
+
+/*--------------------sample run--------------------
+Tune1's information:
+Title: (undefined)	/Artist: (undefined)	/Playing Time: 1seconds	/Bit Rate:
+ 64k
+------------------------------
+Tune2's information:
+Title: Hotel California	/Artist: Eagles	/Playing Time: 390seconds	/Bit
+Rate: 128k
+------------------------------
+Tune3's information:
+Title: (undefined)	/Artist: (undefined)	/Playing Time: 1seconds	/Bit Rate:
+ 64k
+------------------------------
+Tune4's information:
+Title: Don't Cry	/Artist: Guns N Roses	/Playing Time: 285seconds	/Bit
+Rate: 320k
+------------------------------
+
+Now mutate the fields:
+
+Now Tune1 is:
+Title: I Believe I Can Fly	/Artist: R. Kelly	/Playing Time: 1seconds	/Bit
+Rate: 64k
+------------------------------
+Now Tune2 is:
+Title: Hotel California	/Artist: Eagles	/Playing Time: 390seconds	/Bit
+Rate: 256k
+------------------------------
+Now Tune3 is:
+Title: Heal The World	/Artist: Michael Jackson	/Playing Time: 1seconds
+/Bit Rate: 64k
+------------------------------
+Now Tune4 is:
+Title: Don't Cry	/Artist: Guns N Roses	/Playing Time: 6seconds	/Bit Rate:
+320k
+------------------------------
+Now test mutators:
+
+Error, the minimum bitrate is 64k
+
+The tune4's playtime has successfully set to 80seconds
+-----------------------------
+Now test accessors:
+
+The Tune2's title is: Hotel California
+
+The Tune3's artist is: Michael Jackson
+----------------------------------------*/

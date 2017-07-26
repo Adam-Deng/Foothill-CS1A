@@ -1,0 +1,83 @@
+/*
+*Source-code of Assignment #3 for CS 1A
+* Written by Lei Deng, 01/24/2016
+*
+* This program is getting user's weight(in pounds) and height(in inches) to
+* calculate the user's BMI and return user's health status
+* */
+
+
+import java.util.Scanner;
+
+public class Foothill
+{
+   public static void main(String[] args)
+   {
+      //declare literal value 703.0 as a constant value
+      final double CONSTANT_VALUE = 703.0;
+      //declare variable to hold user input and use for BMI calculation
+      double weight, height, BMI;
+      //declare object to used for user input
+      Scanner input = new Scanner(System.in);
+      //ask for user input
+      System.out.print("What is your weight in pounds? ");
+      weight = input.nextDouble();
+      System.out.print("What is your height in inches? ");
+      height = input.nextDouble();
+      input.close();
+      //input validation
+      if (weight <= 0 || height <= 0)
+      {
+         System.out.println("Your weight and height must be both greater than" +
+                 " zero" + "\n" + "please check again, program abort");
+         return;
+      }
+      else
+      {
+         //calculate the BMI
+         BMI = weight * CONSTANT_VALUE / (height * height);
+      }
+      //using BMI value to test user body health status
+      if (BMI < 18.5)
+      {
+         System.out.println("Your Body Mess Index is: " + BMI + "\n" + "You " +
+                 "are underweight");
+      }
+      else if (BMI > 25)
+      {
+         System.out.println("Your Body Mess Index is: " + BMI + "\n" + "You " +
+                 "are overweight");
+      }
+      else
+      {
+         System.out.println("Your Body Mess Index is: " + BMI + "\n" + "You " +
+                 "BMI is optimal");
+      }
+   }
+}
+
+
+
+/*--------------------output--------------------
+Test run #1:
+What is your weight in pounds? 196
+What is your height in inches? 70.75
+Your Body Mess Index is: 27.526976238934186
+You are overweight
+
+
+Test run #2:
+What is your weight in pounds? 141
+What is your height in inches? 67
+Your Body Mess Index is: 22.081309868567608
+You BMI is optimal
+
+
+Test run #3:
+What is your weight in pounds? -130
+What is your height in inches? 61
+Your weight and height must be both greater than zero
+please check again, program abort
+
+
+----------------------------------------*/

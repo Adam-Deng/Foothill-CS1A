@@ -1,0 +1,85 @@
+/*
+*Source-code of Assignment #2 for CS 1A
+* Written by Lei Deng, 01/16/2016
+*
+* */
+
+
+public class Foothill
+{
+   public static void main(String[] args)
+   {
+      //declare variable to hold input value and expression answer
+      int n, answer;
+      System.out.println("when n=3:");
+      n = 3;
+      //calculate result for first expression
+      answer = 2 + 3 + 4;
+      System.out.println("\"2+3+...+(n+1)\" = " + answer);
+      //calculate result for second expression
+      answer = (4 * 5 / 2) - 7;
+      System.out.println("\"((n+1)*(n+2)/2)-7\" = " + answer);
+      //calculate result for third expression
+      answer = 3 + 5;
+      System.out.println("\"3+5+...+(2n-1)\" = " + answer);
+      //calculate result for fourth expression
+      answer = 3 * 3 * 3;
+      System.out.println("\"n^3\" = " + answer);
+      //display a empty line
+      System.out.println();
+      System.out.println("when n=6:");
+      n = 6;
+      //calculate result for first expression
+      answer = 2 + 3 + 4 + 5 + 6 + 7;
+      System.out.println("\"2+3+...+(n+1)\" = " + answer);
+      //calculate result for second expression
+      answer = (7 * 8 / 2) - 7;
+      System.out.println("\"((n+1)*(n+2)/2)-7\" = " + answer);
+      //calculate result for third expression
+      answer = 3 + 5 + 7 + 9 + 11;
+      System.out.println("\"3+5+...+(2n-1)\" = " + answer);
+      //calculate result for fourth expression
+      answer = 6 * 6 * 6;
+      System.out.println("\"n^3\" = " + answer);
+      //display a empty line
+      System.out.println();
+      System.out.println("when n=11:");
+      n = 11;
+      //calculate result for first expression
+      answer = 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12;
+      System.out.println("\"2+3+...+(n+1)\" = " + answer);
+      //calculate result for second expression
+      answer = (12 * 13 / 2) - 7;
+      System.out.println("\"((n+1)*(n+2)/2)-7\" = " + answer);
+      //calculate result for third expression
+      answer = 3 + 5 + 7 + 9 + 11 + 13 + 15 + 17 + 19 + 21;
+      System.out.println("\"3+5+...+(2n-1)\" = " + answer);
+      //calculate result for fourth expression
+      answer = 11 * 11 * 11;
+      System.out.println("\"n^3\" = " + answer);
+
+   }
+}
+
+
+
+/*--------------------output--------------------
+when n=3:
+"2+3+...+(n+1)" = 9
+"((n+1)*(n+2)/2)-7" = 3
+"3+5+...+(2n-1)" = 8
+"n^3" = 27
+
+when n=6:
+"2+3+...+(n+1)" = 27
+"((n+1)*(n+2)/2)-7" = 21
+"3+5+...+(2n-1)" = 35
+"n^3" = 216
+
+when n=11:
+"2+3+...+(n+1)" = 77
+"((n+1)*(n+2)/2)-7" = 71
+"3+5+...+(2n-1)" = 120
+"n^3" = 1331
+
+----------------------------------------*/

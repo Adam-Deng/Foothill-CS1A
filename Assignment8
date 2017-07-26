@@ -1,0 +1,374 @@
+/*
+*Source-code of Assignment #8 for CS 1A
+* Written by Lei Deng, 02/29/2016
+*
+*This programme is to simulate a date, using the user predefine parameter
+* (like finance, romance, distance indicator), the programme give a fit-value
+ * to see whether two people is fit or not
+
+* */
+
+
+import java.util.*;
+import java.text.*;
+
+public class Foothill
+{
+   public static void main(String[] args)
+   {
+      //declare four applicant objects
+      DateProfile applicant1 = new DateProfile('M', 'F', 7, 3, 5, "Hugh " +
+              "Hefner");
+      DateProfile applicant2 = new DateProfile('M', 'F', 5, 7, 2, "Brad Pitt");
+      DateProfile applicant3 = new DateProfile('F', 'M', 8, 5, 10, "Carmen " +
+              "Miranda");
+      DateProfile applicant4 = new DateProfile('F', 'M', 3, 8, 2, "Mary Lynn " +
+              "Rajskub");
+      //declare a array
+      DateProfile[] applicant = {applicant1, applicant2, applicant3,
+              applicant4};
+      //using outer-loop to display the applicant name
+      for (int i = 0; i < applicant.length; i++)
+      {
+         String applicantName = applicant[i].getName();
+         System.out.println(applicantName);
+         //using inner-loop to calculate the fit value of two applicant
+         for (int j = 0; j < applicant.length; j++)
+         {
+            String partnerName = applicant[j].getName();
+            double fitValue = applicant[i].fitValue(applicant[j]);
+            //format the output to only have two digits
+            NumberFormat formatedValue = NumberFormat.getInstance(Locale.US);
+            formatedValue.setMaximumFractionDigits(2);
+            System.out.println(partnerName + " fit: " + formatedValue.format
+                    (fitValue));
+         }
+         System.out.println();
+      }
+   }
+
+   static class DateProfile
+   {
+      private char gender;
+      private char searchGender;
+      private int romance;
+      private int finance;
+      private int distance;
+      private String name;
+      public static final char DEFAULT_GENDER = 'M';
+      public static final char DEFAULT_SEARCHGENDER = 'F';
+      public static final int DEFAULT_ROMANCE = 1;
+      public static final int DEFAULT_FINANCE = 1;
+      public static final int DEFAULT_DISTANCE = 1;
+      public static final String DEFAULT_NAME = "undefined";
+      public static final int MIN_ROMANCE = 1;
+      public static final int MAX_ROMANCE = 10;
+      public static final int MIN_FINANCE = 1;
+      public static final int MAX_FINANCE = 10;
+      public static final int MIN_DISTANCE = 1;
+      public static final int MAX_DISTANCE = 10;
+      public static final int MIN_STRINGLENGTH = 1;
+      public static final int MAX_STRINGLENGTH = 50;
+
+      //default constructor
+      public DateProfile()
+      {
+         gender = DEFAULT_GENDER;
+         searchGender = DEFAULT_SEARCHGENDER;
+         romance = DEFAULT_ROMANCE;
+         finance = DEFAULT_FINANCE;
+         distance = DEFAULT_DISTANCE;
+         name = DEFAULT_NAME;
+      }
+
+      //constructor with parameters
+      public DateProfile(char gender, char searchGender, int romance, int
+              finance, int distance, String name)
+      {
+         if (!setGender(gender))
+         {
+            this.gender = DEFAULT_GENDER;
+         }
+         if (!setSearchGender(searchGender))
+         {
+            this.searchGender = DEFAULT_SEARCHGENDER;
+         }
+         if (!setRomance(romance))
+         {
+            this.romance = DEFAULT_ROMANCE;
+         }
+         if (!setFinance(finance))
+         {
+            this.finance = DEFAULT_FINANCE;
+         }
+         if (!setDistance(distance))
+         {
+            this.distance = DEFAULT_DISTANCE;
+         }
+         if (!setName(name))
+         {
+            this.name = DEFAULT_NAME;
+         }
+      }
+
+      //accessors
+      public char getGender()
+      {
+         return gender;
+      }
+
+      public char getSearchGender()
+      {
+         return searchGender;
+      }
+
+      public int getRomance()
+      {
+         return romance;
+      }
+
+      public int getFinance()
+      {
+         return finance;
+      }
+
+      public int getDistance()
+      {
+         return distance;
+      }
+
+      public String getName()
+      {
+         return name;
+      }
+
+      //mutators
+      public boolean setGender(char gender)
+      {
+         if (gender != 'M' && gender != 'F')
+         {
+            return false;
+         }
+         this.gender = gender;
+         return true;
+      }
+
+      public boolean setSearchGender(char searchGender)
+      {
+         if (gender != 'M' && gender != 'F')
+         {
+            return false;
+         }
+         this.searchGender = searchGender;
+         return true;
+      }
+
+      public boolean setRomance(int romance)
+      {
+         if (romance < MIN_ROMANCE || romance > MAX_ROMANCE)
+         {
+            return false;
+         }
+         this.romance = romance;
+         return true;
+      }
+
+      public boolean setFinance(int finance)
+      {
+         if (finance < MIN_FINANCE || finance > MAX_FINANCE)
+         {
+            return false;
+         }
+         this.finance = finance;
+         return true;
+      }
+
+      public boolean setDistance(int distance)
+      {
+         if (distance < MIN_DISTANCE || distance > MAX_DISTANCE)
+         {
+            return false;
+         }
+         this.distance = distance;
+         return true;
+      }
+
+      public boolean setName(String name)
+      {
+         if (name.length() < MIN_STRINGLENGTH || name.length() >
+                 MAX_STRINGLENGTH)
+         {
+            return false;
+         }
+         this.name = name;
+         return true;
+      }
+
+      public boolean testAllParameter(char gender, char searchGender, int
+              romance, int finance, int distance, String name)
+      {
+         if (setGender(gender) && setSearchGender(searchGender) && setRomance
+                 (romance) && setFinance(finance) && setDistance(distance) &&
+                 setName(name))
+         {
+            return true;
+         }
+         return false;
+      }
+
+      //method to calculate the fit value
+      public double fitValue(DateProfile partner)
+      {
+         double fitValue = determineGenderFit(partner) * determineRomanceFit
+                 (partner) * determineFinanceFit(partner) *
+                 determineDistanceFit(partner);
+         return fitValue;
+      }
+
+      private double determineGenderFit(DateProfile partner)
+      {
+         if (this.searchGender == partner.getGender())
+         {
+            return 1;
+         }
+         return 0;
+      }
+
+      private double determineRomanceFit(DateProfile partner)
+      {
+         if (Math.abs(this.romance - partner.romance) == 0)
+         {
+            return 1.0;
+         } else if (Math.abs(this.romance - partner.romance) == 1)
+         {
+            return 0.9;
+         } else if (Math.abs(this.romance - partner.romance) == 2)
+         {
+            return 0.8;
+         } else if (Math.abs(this.romance - partner.romance) == 3)
+         {
+            return 0.7;
+         } else if (Math.abs(this.romance - partner.romance) == 4)
+         {
+            return 0.6;
+         } else if (Math.abs(this.romance - partner.romance) == 5)
+         {
+            return 0.5;
+         } else if (Math.abs(this.romance - partner.romance) == 6)
+         {
+            return 0.4;
+         } else if (Math.abs(this.romance - partner.romance) == 7)
+         {
+            return 0.3;
+         } else if (Math.abs(this.romance - partner.romance) == 8)
+         {
+            return 0.2;
+         } else
+         {
+            return 0.1;
+         }
+      }
+
+      private double determineFinanceFit(DateProfile partner)
+      {
+
+         if (Math.abs(this.finance - partner.finance) == 0)
+         {
+            return 1.0;
+         } else if (Math.abs(this.finance - partner.finance) == 1)
+         {
+            return 0.9;
+         } else if (Math.abs(this.finance - partner.finance) == 2)
+         {
+            return 0.8;
+         } else if (Math.abs(this.finance - partner.finance) == 3)
+         {
+            return 0.7;
+         } else if (Math.abs(this.finance - partner.finance) == 4)
+         {
+            return 0.6;
+         } else if (Math.abs(this.finance - partner.finance) == 5)
+         {
+            return 0.5;
+         } else if (Math.abs(this.finance - partner.finance) == 6)
+         {
+            return 0.4;
+         } else if (Math.abs(this.finance - partner.finance) == 7)
+         {
+            return 0.3;
+         } else if (Math.abs(this.finance - partner.finance) == 8)
+         {
+            return 0.2;
+         } else
+         {
+            return 0.1;
+         }
+      }
+
+      private double determineDistanceFit(DateProfile partner)
+      {
+
+         if (Math.abs(this.distance - partner.distance) == 0)
+         {
+            return 1.0;
+         } else if (Math.abs(this.distance - partner.distance) == 1)
+         {
+            return 0.9;
+         } else if (Math.abs(this.distance - partner.distance) == 2)
+         {
+            return 0.8;
+         } else if (Math.abs(this.distance - partner.distance) == 3)
+         {
+            return 0.7;
+         } else if (Math.abs(this.distance - partner.distance) == 4)
+         {
+            return 0.6;
+         } else if (Math.abs(this.distance - partner.distance) == 5)
+         {
+            return 0.5;
+         } else if (Math.abs(this.distance - partner.distance) == 6)
+         {
+            return 0.4;
+         } else if (Math.abs(this.distance - partner.distance) == 7)
+         {
+            return 0.3;
+         } else if (Math.abs(this.distance - partner.distance) == 8)
+         {
+            return 0.2;
+         } else
+         {
+            return 0.1;
+         }
+      }
+   }
+}
+
+
+
+
+
+/*--------------------sample run--------------------
+Hugh Hefner
+Hugh Hefner fit: 0
+Brad Pitt fit: 0
+Carmen Miranda fit: 0.36
+Mary Lynn Rajskub fit: 0.21
+
+Brad Pitt
+Hugh Hefner fit: 0
+Brad Pitt fit: 0
+Carmen Miranda fit: 0.11
+Mary Lynn Rajskub fit: 0.72
+
+Carmen Miranda
+Hugh Hefner fit: 0.36
+Brad Pitt fit: 0.11
+Carmen Miranda fit: 0
+Mary Lynn Rajskub fit: 0
+
+Mary Lynn Rajskub
+Hugh Hefner fit: 0.21
+Brad Pitt fit: 0.72
+Carmen Miranda fit: 0
+Mary Lynn Rajskub fit: 0
+----------------------------------------*/
